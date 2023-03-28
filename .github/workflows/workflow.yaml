@@ -10,9 +10,9 @@ jobs:
       - name: display wording
         run: echo hello ${{ github.actor }}
   check-window-version:
-    runs-on: windows
+    runs-on: windows-latest
     steps:
       - name: check server-info
-        run: ver
+        run: systeminfo
       - name: display wording
         run: echo hello ${{ github.actor }}
