@@ -8,7 +8,7 @@ on:
         required: true
 jobs:
   prepare:
-    run-on: self-hosted
+    runs-on: self-hosted
     steps:
       - name: Set Tag on Workflow Dispatch
         if: github.event_name == 'workflow_dispatch'
@@ -16,7 +16,7 @@ jobs:
   
   build:
     needs: prepare
-    run-on: self-hosted
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
 
   deploy:
     needs: build
-    run-on: self-hosted
+    runs-on: self-hosted
     steps:
       - name: deploy container
         run: docker run -d -p 8082:80 piyapanker/lab-node:${{ github.event.inputs.version }}
