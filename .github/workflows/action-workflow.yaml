@@ -25,14 +25,17 @@ jobs:
         with:
           username: piyapanker
           password: ${{ secrets.DOCKER_PIYAPAN }}
-      - name: Build and push
-        run: |
-          docker build -t piyapanker/lab-node:${{ github.event.inputs.version }} .
-          docker push piyapanker/lab-node:${{ github.event.inputs.version }}
+      - name: pwd
+        run: pwd 
+      # - name: Build and push
+      #   run: |
+      #     cd Docker
+      #     docker build -t piyapanker/lab-node:${{ github.event.inputs.version }} .
+      #     docker push piyapanker/lab-node:${{ github.event.inputs.version }}
 
-  deploy:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      - name: deploy container
-        run: docker run -d -p 8082:80 piyapanker/lab-node:${{ github.event.inputs.version }}
+  # deploy:
+  #   needs: build
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: deploy container
+  #       run: docker run -d -p 8082:80 piyapanker/lab-node:${{ github.event.inputs.version }}
