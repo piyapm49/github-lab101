@@ -27,7 +27,6 @@ jobs:
           password: ${{ secrets.DOCKER_PIYAPAN }}
       - name: Build and push
         run: |
-          cd Docker
           docker build -t piyapanker/lab-node:${{ github.event.inputs.version }} .
           docker push piyapanker/lab-node:${{ github.event.inputs.version }}
 
