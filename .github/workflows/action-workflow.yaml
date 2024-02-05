@@ -1,0 +1,39 @@
+name: action-workflow
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'input your software version'
+        default: 'lastest'
+        required: true
+jobs:
+  prepare:
+    run-on: self-hosted
+    steps:
+      - name: Set Tag on Workflow Dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "${{ github.event.inputs.version }}"
+  
+  build:
+    needs: prepare
+    run-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: piyapanker
+          password: ${{ secrets.DOCKER_PIYAPAN }}
+      - name: Build and push
+        run: |
+          cd Docker
+          docker build -t piyapanker/lab-node:${{ github.event.inputs.version }} .
+          docker push piyapanker/lab-node:${{ github.event.inputs.version }}
+
+  deploy:
+    needs: build
+    run-on: self-hosted
+    steps:
+      - name: deploy container
+        run: docker run -d -p 8082:80 piyapanker/lab-node:${{ github.event.inputs.version }}
